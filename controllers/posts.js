@@ -25,4 +25,13 @@ module.exports = function (app) {
             return(res.redirect('/'))
         })
     })
+
+    //Posts-show GET
+    app.get('/posts/:id', (req, res) => {
+        Post.findById(req.params.id).then((post) => {
+            res.render('posts-show', {post: post})
+        }).catch(err => {
+            console.log(err)
+        })
+    })
 }
