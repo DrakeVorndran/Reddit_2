@@ -2,11 +2,18 @@ const Post = require('../models/Post')
 
 module.exports = function (app) {
 
+    //Subreddit GET
+    app.get('/n/:subreddit', (req, res) => {
+        Post.find({ subreddit: req.params.subreddit }).then((posts) => {
+            res.render('posts-index', { posts })
+        })
+    })
+
     //Posts-index GET
     app.get('/posts', (req, res) => {
         Post.find().then((posts) => {
             console.log(posts)
-            res.render('posts', {posts: posts})
+            res.render('posts-index', {posts: posts})
         }).catch(err => {
             console.log(err)
         })
@@ -34,4 +41,5 @@ module.exports = function (app) {
             console.log(err)
         })
     })
+
 }

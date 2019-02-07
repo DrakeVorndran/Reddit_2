@@ -9,7 +9,8 @@ const Post = mongoose.model('post', {
     },
     title: String,
     url: String,
-    summary: String
+    summary: String,
+    subreddit: { type: String, required: true }
 })
 
 module.exports = Post
