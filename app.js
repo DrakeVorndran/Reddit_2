@@ -6,7 +6,7 @@ const methodOverride = require('method-override');
 mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/redditClone');
 const exphbs = require("express-handlebars");
 const app = express();
-
+// require('./data/reddit-db');
 
 //middleware
 app.engine('.hbs', exphbs({extname: '.hbs', defaultLayout: 'main'}));
@@ -24,7 +24,8 @@ app.get('/', (req, res) => {
     res.redirect('/posts')
 })
 
-posts = require('./controllers/posts')(app)
+require('./controllers/posts')(app)
+require('./controllers/comments')(app)
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => {

@@ -1,6 +1,7 @@
 const mongoose = require('mongoose')
+const Schema = mongoose.Schema;
 
-const Post = mongoose.model('post', {
+const PostSchema = new Schema({
     createdAt: {
         type: Date
     },
@@ -10,7 +11,28 @@ const Post = mongoose.model('post', {
     title: String,
     url: String,
     summary: String,
-    subreddit: { type: String, required: true }
+    subreddit: {
+        type: String,
+        required: true
+    },
+    
+    comments: [{ type: Schema.Types.ObjectId, ref: 'Comment' }]
+
+    
 })
 
-module.exports = Post
+PostSchema.pre("save", function (next) {
+    // SET createdAt AND updatedAt
+    const now = new Date();
+    this.updatedAt = now;
+
+    if (!this.createdAt) {
+        this.createdAt = now;
+    }
+    next();
+});
+
+
+
+module.exports = mongoose.model("Post", PostSchema);
+// module.exports = Post
