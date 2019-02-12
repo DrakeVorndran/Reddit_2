@@ -12,7 +12,6 @@ router.post('/sign-up', (req, res) => {
     const user = new User(req.body)
     user.save()
     .then(user => {
-        console.log(user._id)
         let token = jwt.sign({ _id: user._id }, process.env.SECRET, { expiresIn: "60 days" });
         res.cookie("nToken", token, {maxAge: 900000, httpOnly: true})
         return res.redirect('/')
@@ -23,6 +22,35 @@ router.post('/sign-up', (req, res) => {
     })
 })
 
+router.get('/login', (req, res) => {
+    res.render('login')
+}) 
+
+router.post('/login', (req, res) => {
+    const username = req.body.username
+    const password = req.body.password
+    User.findOne({ username })
+    .then(user => {
+        if(!user) {
+            return res.status(401).send({message: "User does not exist in our system"})
+        }
+        console.log("username correct")
+
+        user.comparePassword(password, (err, isMatch) => {
+            if(!isMatch) {
+                console.log("password wrong")
+                return res.status(401).send({message: "Wrong password for username"})
+            }
+            console.log("password right")
+
+            let token = jwt.sign({_id: user._id}, process.env.SECRET, {expiresIn: "60 days"} )
+            res.cookie("nToken", token, {maxAge: 900000, httpOnly: true})
+            res.redirect('/')
+        })
+    }).catch(err => {
+        console.log(err)
+    })
+})
 
 router.get('/logout', (req, res) => {
     res.clearCookie('nToken')

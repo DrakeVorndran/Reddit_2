@@ -5,7 +5,7 @@ const bcrypt = require('bcryptjs')
 const userSchema = new Schema({
     createdAt: {type: Date},
     updatedAt: {type: Date},
-    password: {type: String, select: false},
+    password: {type: String},
     username: {type: String, required: true}
 })
 
@@ -28,8 +28,10 @@ userSchema.pre("save", function(next) {
     })
 })
 
-userSchema.methods.comparePassowrd = function(password, done) {
+userSchema.methods.comparePassword = function(password, done) {
+    console.log(password, this)
     bcrypt.compare(password, this.password, (err, isMatch) => {
+        console.log(err)
         done(err, isMatch)
     })
 }
