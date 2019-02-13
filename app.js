@@ -11,18 +11,45 @@ const exphbs = require("express-handlebars");
 const app = express();
 
 
+const checkAuth = (req, res, next) => {
+    console.log("Checking authentication");
+    if (typeof req.cookies.nToken === "undefined" || req.cookies.nToken === null) {
+        req.user = null;
+    } else {
+        var token = req.cookies.nToken;
+        var decodedToken = jwt.decode(token, { complete: true }) || {};
+        req.user = decodedToken.payload;
+    }
+
+    next();
+};
+
+
+
+
+
 
 
 // require('./data/reddit-db');
 
 //middleware
-app.engine('.hbs', exphbs({extname: '.hbs', defaultLayout: 'main'}));
+app.engine('.hbs', exphbs({
+    extname: '.hbs',
+    defaultLayout: 'main'
+}));
 app.set('view engine', '.hbs');
 app.use(methodOverride("_method"));
 app.use(cookieParser())
+app.use(checkAuth)
+
 
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({
+    extended: false
+}));
+
+
+
 
 app.use(expressValidator());
 

@@ -1,5 +1,6 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema;
+const populate = require("../util/autopopulate");
 
 const PostSchema = new Schema({
     createdAt: {
@@ -15,7 +16,8 @@ const PostSchema = new Schema({
         type: String,
         required: true
     },
-    comments: [{ type: Schema.Types.ObjectId, ref: 'Comment' }]
+    comments: [{ type: Schema.Types.ObjectId, ref: 'Comment' }],
+    author: {type: Schema.Types.ObjectId, ref: 'User', required: true}
 })
 
 PostSchema.pre("save", function (next) {
@@ -27,7 +29,9 @@ PostSchema.pre("save", function (next) {
         this.createdAt = now;
     }
     next();
-});
+})
+// .pre('findOne', populate('author'))
+// .pre('find', populate('author'))
 
 
 
