@@ -11,11 +11,11 @@ const CommentSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'Comment'
   }],
-  // author: {
-  //   type: Schema.Types.ObjectId,
-  //   ref: 'author',
-  //   required: true
-  // }
+  author: {
+    type: Schema.Types.ObjectId,
+    ref: 'author',
+    required: true
+  }
 });
 
 CommentSchema

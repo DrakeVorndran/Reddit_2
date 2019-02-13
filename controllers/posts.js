@@ -43,6 +43,7 @@ router.get('/posts/new', (req, res) => {
 
 //Posts-new POST
 router.post('/posts/new', (req, res) => {
+    if(req.user) {
         const post = new Post(req.body)
         post.author = req.user._id
         post
@@ -56,7 +57,10 @@ router.post('/posts/new', (req, res) => {
                 })
             })
         })
-    
+    }
+    else {
+        return res.status(401)
+    }
 })
 
 //Posts-show GET
