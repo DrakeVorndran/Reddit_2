@@ -21,5 +21,6 @@ const CommentSchema = new Schema({
 CommentSchema
 .pre('findOne', populate('author'))
 .pre('find', populate('author'))
+.pre('find', populate('comments'))
 
 module.exports = mongoose.model("Comment", CommentSchema);
