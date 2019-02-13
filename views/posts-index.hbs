@@ -9,6 +9,13 @@
                 <div class="text-right">
                     <a href="/n/{{this.subreddit}}">{{this.subreddit}}</a>
                 </div>
+                <form class="vote-up" method="POST" action="/posts/{{this._id}}/up?_method=PUT">
+                    <button type="submit">Vote Up</button>
+                </form>
+                <p>{{this.voteScore}}</p>
+                <form class="vote-down" method="POST" action="/posts/{{this._id}}/down?_method=PUT">
+                    <button type="submit">Vote Down</button>
+                </form>
             </li>
             {{/each}}
         </ul>

@@ -33,6 +33,7 @@ const checkAuth = (req, res, next) => {
 // require('./data/reddit-db');
 
 //middleware
+app.use(methodOverride("_method"));
 app.engine('.hbs', exphbs({
     extname: '.hbs',
     defaultLayout: 'main'
