@@ -41,7 +41,7 @@ app.set('view engine', '.hbs');
 app.use(methodOverride("_method"));
 app.use(cookieParser())
 app.use(checkAuth)
-
+app.use(express.static(__dirname + '/public'));
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
@@ -58,6 +58,7 @@ app.use(expressValidator());
 const posts = require('./controllers/posts')
 const comments = require('./controllers/comments')
 const auth = require('./controllers/auth')
+const replies = require('./controllers/replies')
 
 app.get('/', (req, res) => {
     res.redirect('/posts')
@@ -66,6 +67,7 @@ app.get('/', (req, res) => {
 app.use('/', posts)
 app.use('/', comments)
 app.use('/', auth)
+app.use('/', replies)
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => {
