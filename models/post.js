@@ -30,8 +30,8 @@ PostSchema.pre("save", function (next) {
     }
     next();
 })
-// .pre('findOne', populate('author'))
-// .pre('find', populate('author'))
+.pre('findOne', populate('author'))
+.pre('find', populate('author'))
 
 
 

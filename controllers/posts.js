@@ -10,7 +10,7 @@ router.get('/n/:subreddit', (req, res) => {
     const currentUser = req.user
     Post.find({
             subreddit: req.params.subreddit
-        }).populate('author')
+        }).lean()
         .then((posts) => {
             res.render('posts-index', {
                 posts,
@@ -22,7 +22,8 @@ router.get('/n/:subreddit', (req, res) => {
 //Posts-index GET
 router.get('/posts', (req, res) => {
     const currentUser = req.user
-    Post.find().populate('author').then((posts) => {
+    Post.find().lean()
+    .then((posts) => {
         res.render('posts-index', {
             posts,
             currentUser

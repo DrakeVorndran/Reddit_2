@@ -1,5 +1,6 @@
 const Comment = require('../models/comment');
 const Post = require('../models/post');
+const User = require('../models/user');
 
 
 const express = require('express')
@@ -12,17 +13,22 @@ router.post('/posts/:postId/comments', (req, res) => {
         comment.author = req.user
         comment.save()
             .then(comment => {
-                Post.findById(req.params.postId)
-                    .then(post => {
-                        post.comments.unshift(comment)
-                        post.save()
-                            .then(post => {
-                                res.redirect(`/posts/${req.params.postId}`)
-                            })
-                    })
+                User.findById(comment.author).then(user => {
+                    user.comments.unshift(comment._id)
+                    user.save()
+                        .then(user => {
+                            Post.findById(req.params.postId)
+                                .then(post => {
+                                    post.comments.unshift(comment)
+                                    post.save()
+                                        .then(post => {
+                                            res.redirect(`/posts/${req.params.postId}`)
+                                        })
+                                })
+                        })
+                })
             })
-    }
-    else{
+    } else {
         return res.status(401)
     }
 

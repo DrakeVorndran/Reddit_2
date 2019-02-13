@@ -13,13 +13,13 @@ const CommentSchema = new Schema({
   }],
   author: {
     type: Schema.Types.ObjectId,
-    ref: 'author',
+    ref: 'User',
     required: true
   }
 });
 
 CommentSchema
-// .pre('findOne', populate('author'))
-// .pre('find', populate('author'))
+.pre('findOne', populate('author'))
+.pre('find', populate('author'))
 
 module.exports = mongoose.model("Comment", CommentSchema);
